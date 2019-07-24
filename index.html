@@ -12,8 +12,8 @@
            margin: 0px;
         }
         div.row div{
-            width: 20px;
-            height: 20px;
+            width: 40px;
+            height: 40px;
             display: inline-block;
             margin-bottom: -4px;
        }
@@ -23,16 +23,16 @@
        }
        div.coin{
             background: url('coin.gif');
-            height: 20px;
-            width: 20px;
+            height: 40px;
+            width: 40px;
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
        }
        div.cherry{
             background: url('cherry.gif');
-            height: 20px;
-            width: 20px;
+            height: 40px;
+            width: 40px;
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -41,25 +41,32 @@
             background: url('pacmanRight.jpg');
             background-size: cover;
             position: absolute;
-            height: 20px;
-            width: 20px;
+            height: 40px;
+            width: 40px;
+       }
+       div#pikachu{
+            background: url('pikachuLeft.png');
+            background-size: cover;
+            position: absolute;
+            height: 40px;
+            width: 40px;
        }
        div#ghost{
             background: url('ghost.gif');
             background-size: cover;
             position: absolute;
-            height: 20px;
-            width: 20px;
+            height: 40px;
+            width: 40px;
        }
        div.empty{
-           height: 20px;
-           width: 20px;
+           height: 40px;
+           width: 40px;
            background-color: black;
        }
        div#score{
            border: 1px solid white;
-           height: 20px;
-           width: 40px;
+           height: 100px;
+           width: 50px;
            color: white;
            padding: 10px;
            text-align: center;
@@ -72,28 +79,45 @@
 
         <div id="world"></div>
         <div id="pacman" style="top: 29px; left: 29px;"></div>
+        <div id="pikachu" style="top: 29px; left: 29px;"></div>
         <div id="score">0</div>
         <div id="ghost"></div>
 
     <script>
         var world = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 2, 1, 1, 1, 1, 1, 1, 0],
-            [0, 1, 0, 2, 0, 1, 0, 1, 0],
-            [0, 1, 1, 1, 3, 1, 1, 1, 0],
-            [0, 1, 0, 3, 0, 3, 0, 1, 0],
-            [0, 1, 1, 1, 3, 1, 1, 1, 0],
-            [0, 1, 0, 1, 0, 2, 0, 1, 0],
-            [0, 1, 1, 1, 1, 1, 2, 1, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 1, 1, 1, 2, 1, 2, 1, 3, 1, 1, 1, 2, 1, 1, 3, 0],
+            [0, 1, 0, 2, 0, 1, 0, 1, 0, 2, 0, 0, 1, 0, 1, 0, 1, 0],
+            [0, 3, 1, 2, 3, 1, 2, 2, 1, 1, 0, 0, 1, 0, 1, 0, 2, 0],
+            [0, 1, 0, 3, 0, 3, 0, 1, 1, 2, 1, 1, 3, 0, 3, 0, 3, 0],
+            [0, 3, 1, 2, 3, 1, 2, 2, 1, 1, 0, 0, 1, 0, 1, 0, 2, 0],
+            [0, 1, 0, 1, 0, 2, 0, 1, 0, 2, 0, 0, 1, 0, 2, 0, 1, 0],
+            [0, 2, 2, 1, 2, 1, 1, 2, 1, 2, 1, 3, 1, 2, 2, 1, 3, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             ]
 
         var pacman = {
             x: 1,
             y: 1,
             health: 1,
+            score: 0,
         }
-        var score = 0;
+
+        var pikachu = {
+            x: 1,
+            y: 7,
+            health: 1,
+            score: 0,
+        }
+
+        var ghost = {
+            x: getRandomArbitrary(16,2),
+            y: getRandomArbitrary(8,2),
+        }
+
+        function getRandomArbitrary(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
 
         function drawWorld(arr){
             var output = '';
@@ -116,34 +140,62 @@
         }
 
         function drawPacman(){
-            document.getElementById('pacman').style.left = pacman.x*20+"px";
-            document.getElementById('pacman').style.top = pacman.y*20+"px";
+            document.getElementById('pacman').style.left = pacman.x*40+"px";
+            document.getElementById('pacman').style.top = pacman.y*40+"px";
         }
-
-        function getRandomArbitrary(min, max) {
-            return Math.floor(Math.random() * (max - min) + min);
+        function drawPikachu(){
+            document.getElementById('pikachu').style.left = pikachu.x*40+"px";
+            document.getElementById('pikachu').style.top = pikachu.y*40+"px";
         }
-
         function drawGhost(a,b){
-            var ghostLocation = [a, b];
-            document.getElementById('ghost').style.left = a*20+"px";
-            document.getElementById('ghost').style.top = b*20+"px";
-            return ghostLocation;
+            document.getElementById('ghost').style.left = ghost.x*40+"px";
+            document.getElementById('ghost').style.top = ghost.y*40+"px";
         }
 
         function drawScore(){
-            document.getElementById('score').innerHTML = score;
+            document.getElementById('score').innerHTML = "Pacman: " + pacman.score + " Pikachu: " + pikachu.score + "";
         }
 
-        var pacmanLocation = [pacman.y, pacman.x];
-        var ghostLocation = drawGhost(getRandomArbitrary(8,2),getRandomArbitrary(8,2));
+        
+        function checklife(){
+            //console.log(pacman.health);
+            if(ghost.x === pacman.x && ghost.y === pacman.y){
+                pacman.health--;
+                if (pacman.health === 0){
+                    alert('Pacman got caught!');
+                    pacman.x = 1;
+                    pacman.y = 1;
+                    pacman.health = 1;
+                    ghost.x = getRandomArbitrary(8,2);
+                    ghost.y = getRandomArbitrary(8,2);
+                    drawPacman();
+                    drawGhost();
+                }
+            }
+            if(ghost.x === pikachu.x && ghost.y === pikachu.y){
+                pikachu.health--;
+                if (pikachu.health === 0){
+                    alert('Pikachu got caught!');
+                    pikachu.x = 1;
+                    pikachu.y = 7;
+                    pikachu.health = 1;
+                    ghost.x = getRandomArbitrary(8,2);
+                    ghost.y = getRandomArbitrary(8,2);
+                    drawPikachu();
+                    drawGhost();
+                }
+            }
+        }
+
+        drawPikachu();
+        drawGhost();
         drawScore();
         drawPacman();
         drawWorld();
 
-
+        //pacman movement
         document.onkeydown = function(e){
-            // console.log(e);
+            console.log(e);
 
             if (e.keyCode == 40){ //down
                 if (world[pacman.y+1][pacman.x] == 0){
@@ -184,27 +236,123 @@
                 document.getElementById('pacman').style.backgroundSize = "cover";
             }
 
-            pacmanLocation = [pacman.y, pacman.x];
+            if (e.keyCode == 83){ //down
+                if (world[pikachu.y+1][pikachu.x] == 0){
+                    pikachu.y = pikachu.y;
+                } else {
+                pikachu.y++;
+                }
+                document.getElementById('pikachu').style.background = "url('pikachuDown.png')";
+                document.getElementById('pikachu').style.backgroundSize = "cover";
+            }
+            if (e.keyCode == 65){ //left
+                if (world[pikachu.y][pikachu.x-1] == 0){
+                    pikachu.x = pikachu.x;
+                } else {
+                    pikachu.x--;
+                }
+                document.getElementById('pikachu').style.background = "url('pikachuLeft.png')";
+                document.getElementById('pikachu').style.backgroundSize = "cover";
 
+            }
+            if (e.keyCode == 68){ //right
+                if (world[pikachu.y][pikachu.x+1] == 0){
+                    pikachu.x = pikachu.x;
+                } else {
+                    pikachu.x++;
+                }
+                document.getElementById('pikachu').style.background = "url('pikachuRight.png')";
+                document.getElementById('pikachu').style.backgroundSize = "cover";
+
+            }
+            if (e.keyCode == 87){ //up
+                if (world[pikachu.y-1][pikachu.x] == 0){
+                    pikachu.y = pikachu.y;
+                } else {
+                    pikachu.y--;
+                }
+                document.getElementById('pikachu').style.background = "url('pikachuUp.png')";
+                document.getElementById('pikachu').style.backgroundSize = "cover";
+            }
+            
+            if (world[ghost.y][ghost.x] == 0){
+                world[ghost.y][ghost.x] = 2;
+                drawWorld();
+                }
+            //scorecheck
             if (world[pacman.y][pacman.x] == 1){
                 world[pacman.y][pacman.x] = 2;
-                score += 10;
+                pacman.score += 10;
                 drawWorld();
                 drawScore();
                 }
             if (world[pacman.y][pacman.x] == 3){
                 world[pacman.y][pacman.x] = 2;
-                score += 50;
+                pacman.score += 50;
                 drawWorld();
                 drawScore();
             }
-            if (ghostLocation === pacmanLocation){
-                pacman.health--;
-                console.log(pacman.health);
-            }
+            checklife();
             drawPacman();
+
+
+            //scorecheck
+            if (world[pikachu.y][pikachu.x] == 1){
+                world[pikachu.y][pikachu.x] = 2;
+                pikachu.score += 10;
+                drawWorld();
+                drawScore();
+                }
+            if (world[pikachu.y][pikachu.x] == 3){
+                world[pikachu.y][pikachu.x] = 2;
+                pikachu.score += 50;
+                drawWorld();
+                drawScore();
+            }
+            checklife();
+            drawPikachu();
         }
 
+        function ghostMove(){
+            
+            var direction = getRandomArbitrary(1, 5);
+
+            if (direction == 1){ //down
+                if (world[ghost.y+1][ghost.x] == 0){
+                    ghost.y = ghost.y;
+                } else {
+                ghost.y++;
+                }
+            }
+            else if (direction == 2){ //up
+                if (world[ghost.y-1][ghost.x] == 0){
+                    ghost.y = ghost.y;
+                } else {
+                ghost.y--;
+                }
+            }
+            else if (direction == 3){ //right
+                if (world[ghost.y][ghost.x+1] == 0){
+                    ghost.x = ghost.x;
+                } else {
+                ghost.x++;
+                }
+            }
+            else {  //right
+                if (world[ghost.y][ghost.x-1] == 0){
+                    ghost.x = ghost.x;
+                } else {
+                ghost.x--;
+                }
+            }
+            drawGhost(ghost.x, ghost.y);
+            checklife();
+        }
+
+        setInterval(function () {
+            ghostMove();
+            checklife();
+        }, 100);
     </script>
     </body>    
 
