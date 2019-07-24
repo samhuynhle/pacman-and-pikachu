@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+      <title> Pacman Samman</title>
+
+      <style type="text/css">
+      * {
+          margin: 0px;
+      }
+       body{
+           background-color: black;
+           margin: 0px;
+        }
+        div.row div{
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-bottom: -4px;
+       }
+       div.wall{
+           background-color: blue;
+           margin: 0px;
+       }
+       div.coin{
+            background: url('coin.gif');
+            height: 20px;
+            width: 20px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+       }
+       div.cherry{
+            background: url('cherry.gif');
+            height: 20px;
+            width: 20px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+       }
+       div#pacman{
+            background: url('pacmanRight.jpg');
+            background-size: cover;
+            position: absolute;
+            height: 20px;
+            width: 20px;
+       }
+       div#ghost{
+            background: url('ghost.gif');
+            background-size: cover;
+            position: absolute;
+            height: 20px;
+            width: 20px;
+       }
+       div.empty{
+           height: 20px;
+           width: 20px;
+           background-color: black;
+       }
+       div#score{
+           border: 1px solid white;
+           height: 20px;
+           width: 40px;
+           color: white;
+           padding: 10px;
+           text-align: center;
+       }
+    </style>
+    
+</head>   
+
+    <body>
+
+        <div id="world"></div>
+        <div id="pacman" style="top: 29px; left: 29px;"></div>
+        <div id="score">0</div>
+        <div id="ghost"></div>
+
+    <script>
+        var world = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 1, 1, 1, 1, 1, 1, 0],
+            [0, 1, 0, 2, 0, 1, 0, 1, 0],
+            [0, 1, 1, 1, 3, 1, 1, 1, 0],
+            [0, 1, 0, 3, 0, 3, 0, 1, 0],
+            [0, 1, 1, 1, 3, 1, 1, 1, 0],
+            [0, 1, 0, 1, 0, 2, 0, 1, 0],
+            [0, 1, 1, 1, 1, 1, 2, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ]
+
+        var pacman = {
+            x: 1,
+            y: 1,
+            health: 1,
+        }
+        var score = 0;
+
+        function drawWorld(arr){
+            var output = '';
+
+            for (var i = 0; i < world.length; i++){
+                output += "<div class='row'>";
+                for (var j = 0; j < world[i].length; j++){
+                    if(world[i][j] == 0)
+                        output += "<div class='wall'></div>";
+                    else if (world[i][j] == 1)
+                        output += "<div class='coin'></div>";
+                    else if (world[i][j] == 3)
+                        output += "<div class='cherry'></div>";
+                    if(world[i][j] == 2)
+                        output += "<div class='empty'></div>";
+                    }
+                output += "</div>";
+            }
+            document.getElementById('world').innerHTML = output;
+        }
+
+        function drawPacman(){
+            document.getElementById('pacman').style.left = pacman.x*20+"px";
+            document.getElementById('pacman').style.top = pacman.y*20+"px";
+        }
+
+        function getRandomArbitrary(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function drawGhost(a,b){
+            var ghostLocation = [a, b];
+            document.getElementById('ghost').style.left = a*20+"px";
+            document.getElementById('ghost').style.top = b*20+"px";
+            return ghostLocation;
+        }
+
+        function drawScore(){
+            document.getElementById('score').innerHTML = score;
+        }
+
+        var pacmanLocation = [pacman.y, pacman.x];
+        var ghostLocation = drawGhost(getRandomArbitrary(8,2),getRandomArbitrary(8,2));
+        drawScore();
+        drawPacman();
+        drawWorld();
+
+
+        document.onkeydown = function(e){
+            // console.log(e);
+
+            if (e.keyCode == 40){ //down
+                if (world[pacman.y+1][pacman.x] == 0){
+                    pacman.y = pacman.y;
+                } else {
+                pacman.y++;
+                }
+                document.getElementById('pacman').style.background = "url('pacmanDown.jpg')";
+                document.getElementById('pacman').style.backgroundSize = "cover";
+            }
+            if (e.keyCode == 37){ //left
+                if (world[pacman.y][pacman.x-1] == 0){
+                    pacman.x = pacman.x;
+                } else {
+                pacman.x--;
+                }
+                document.getElementById('pacman').style.background = "url('pacmanLeft.jpg')";
+                document.getElementById('pacman').style.backgroundSize = "cover";
+
+            }
+            if (e.keyCode == 39){ //right
+                if (world[pacman.y][pacman.x+1] == 0){
+                    pacman.x = pacman.x;
+                } else {
+                pacman.x++;
+                }
+                document.getElementById('pacman').style.background = "url('pacmanRight.jpg')";
+                document.getElementById('pacman').style.backgroundSize = "cover";
+
+            }
+            if (e.keyCode == 38){ //up
+                if (world[pacman.y-1][pacman.x] == 0){
+                    pacman.y = pacman.y;
+                } else {
+                pacman.y--;
+                }
+                document.getElementById('pacman').style.background = "url('pacmanUp.jpg')";
+                document.getElementById('pacman').style.backgroundSize = "cover";
+            }
+
+            pacmanLocation = [pacman.y, pacman.x];
+
+            if (world[pacman.y][pacman.x] == 1){
+                world[pacman.y][pacman.x] = 2;
+                score += 10;
+                drawWorld();
+                drawScore();
+                }
+            if (world[pacman.y][pacman.x] == 3){
+                world[pacman.y][pacman.x] = 2;
+                score += 50;
+                drawWorld();
+                drawScore();
+            }
+            if (ghostLocation === pacmanLocation){
+                pacman.health--;
+                console.log(pacman.health);
+            }
+            drawPacman();
+        }
+
+    </script>
+    </body>    
+
+</html>
